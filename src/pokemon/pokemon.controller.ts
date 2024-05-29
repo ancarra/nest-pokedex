@@ -33,4 +33,5 @@ export class PokemonController {
   remove(@Param('term', ParseMongoIdPipe) term: string) {
     return this.pokemonService.remove(term);
   }  
+  
 }

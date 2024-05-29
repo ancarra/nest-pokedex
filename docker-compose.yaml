@@ -1,6 +1,7 @@
-version : '3'
+version: '3'
+
 services:
-    db: 
+    db:
         image: mongo:5
         restart: always
         ports:
@@ -8,4 +9,6 @@ services:
         environment:
             MONGODB_DATABASE: nest-pokemon
         volumes:
-            - ./mongo:/data/db 
+            - ./mongo:/data/db
+        # tty: true
+        
