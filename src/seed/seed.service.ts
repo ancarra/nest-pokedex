@@ -5,6 +5,8 @@ import { CreatePokemonDto } from 'src/pokemon/dto/create-pokemon.dto';
 import { Pokemon } from 'src/pokemon/entities/pokemon.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { PokemonInsert } from './interfaces/poke-insert.interface';
+import internal from 'stream';
 
 @Injectable()
 export class SeedService {
@@ -29,16 +31,27 @@ export class SeedService {
   }
 
   async executeSeed() {
-    const { data } = await axios.get<PokeResponse>('https://pokeapi.co/api/v2/pokemon?limit=2')
+    await this.pokemonModel.deleteMany({});
+    const { data } = await axios.get<PokeResponse>('https://pokeapi.co/api/v2/pokemon?limit=610');
+
+    const insertPromisesArray = [];
+    const pokemonToInsert: { name: string, no: number }[] = [];
 
     data.results.forEach(async ({ name, url }) => {
       const segments = url.split('/');
       const no = +segments[segments.length - 2];
       const item = { name, no };
-      const create = await this.create(item);
-      
-      console.log(item);
-    })
+      //const create = await this.create(item);
+      // insertPromisesArray.push(
+      //   this.pokemonModel.create(item)
+      // )
+      pokemonToInsert.push(item);
+      //console.log(item);
+    });
+
+    //await Promise.all(insertPromisesArray);    
+    this.pokemonModel.insertMany(pokemonToInsert);
+
     return data;
   }
 }

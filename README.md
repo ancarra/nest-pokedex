@@ -20,8 +20,17 @@ docker compose up -d
 
 ```
 
+5. Reconstruir la base de datos de forma masiva
+
+```
+https://localhost:4000/api/v2/seed
+
+```
+
 ## Stack usado
 * MongoDB
 * Nest 
+
+
 
 
