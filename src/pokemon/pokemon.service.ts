@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException, Query } from '@nestjs/common';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 import { Model, isValidObjectId } from 'mongoose';
@@ -27,7 +27,9 @@ export class PokemonService {
   }
 
   findAll() {
-    return `This action returns all pokemon idiot`;
+    return this.pokemonModel.find()
+    .limit(10)
+    .skip (10)
   }
 
   async findOne(term: string) {
