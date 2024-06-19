@@ -7,6 +7,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { waitForDebugger } from 'inspector';
 import { throwError } from 'rxjs';
 import { platform } from 'os';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Injectable()
 export class PokemonService {
@@ -26,10 +27,15 @@ export class PokemonService {
     }
   }
 
-  findAll() {
+  findAll(paginationDto: PaginationDto) {
+    const { limit = 10, offset = 0 } = paginationDto;
     return this.pokemonModel.find()
-    .limit(10)
-    .skip (10)
+      .limit(limit)
+      .skip(offset)
+      .sort({
+        no: 1 //ordena ascendentemente
+      })
+      .select('-__v')
   }
 
   async findOne(term: string) {
@@ -85,5 +91,5 @@ export class PokemonService {
 
     return;
   }
-  
+
 }
